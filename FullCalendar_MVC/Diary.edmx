@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Diary.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="DiaryStoreContainer">
+          <EntitySet Name="AppointmentDiary" EntityType="Diary.Store.AppointmentDiary" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="AppointmentDiary">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="SomeImportantKey" Type="int" Nullable="false" />
+          <Property Name="DateTimeScheduled" Type="datetime" Nullable="false" />
+          <Property Name="AppointmentLength" Type="int" Nullable="false" />
+          <Property Name="StatusENUM" Type="int" Nullable="false" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Diary" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="DiaryContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AppointmentDiary" EntityType="Diary.AppointmentDiary" />
+        </EntityContainer>
+        <EntityType Name="AppointmentDiary">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="SomeImportantKey" Nullable="false" />
+          <Property Type="DateTime" Name="DateTimeScheduled" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="AppointmentLength" Nullable="false" />
+          <Property Type="Int32" Name="StatusENUM" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Diary" />
+        <Alias Key="Target" Value="Diary.Store" />
+        <EntityContainerMapping CdmEntityContainer="DiaryContainer" StorageEntityContainer="DiaryStoreContainer">
+          <EntitySetMapping Name="AppointmentDiary">
+            <EntityTypeMapping TypeName="Diary.AppointmentDiary">
+              <MappingFragment StoreEntitySet="AppointmentDiary">
+                <ScalarProperty Name="StatusENUM" ColumnName="StatusENUM" />
+                <ScalarProperty Name="AppointmentLength" ColumnName="AppointmentLength" />
+                <ScalarProperty Name="DateTimeScheduled" ColumnName="DateTimeScheduled" />
+                <ScalarProperty Name="SomeImportantKey" ColumnName="SomeImportantKey" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

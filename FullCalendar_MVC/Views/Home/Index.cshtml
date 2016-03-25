@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts{
+    
+<script>
+    $(document).ready(function () {
+
+        var sourceFullView = { url: '/Home/GetDiaryEvents/' };
+        var sourceSummaryView = { url: '/Home/GetDiarySummary/' };
+        var CalLoading = true;
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            defaultView: 'agendaDay',
+            editable: true,
+            allDaySlot: false,
+            selectable: true,
+            slotMinutes: 15,
+            events: '/Home/GetDiaryEvents/',
+            eventClick: function (calEvent, jsEvent, view) {
+                alert('You clicked on event id: ' + calEvent.id
+                    + "\nSpecial ID: " + calEvent.someKey
+                    + "\nAnd the title is: " + calEvent.title);
+
+            },
+
+            eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
+                if (confirm("Confirm move?")) {
+                    UpdateEvent(event.id, event.start);
+                }
+                else {
+                    revertFunc();
+                }
+            },
+
+            eventResize: function (event, dayDelta, minuteDelta, revertFunc) {
+
+                if (confirm("Confirm change appointment length?")) {
+                    UpdateEvent(event.id, event.start, event.end);
+                }
+                else {
+                    revertFunc();
+                }
+            },
+
+
+
+            dayClick: function (date, allDay, jsEvent, view) {
+                $('#eventTitle').val("");
+                $('#eventDate').val($.fullCalendar.formatDate(date, 'dd/MM/yyyy'));
+                $('#eventTime').val($.fullCalendar.formatDate(date, 'HH:mm'));
+                ShowEventPopup(date);
+            },
+
+            viewRender: function (view, element) {
+
+                if (!CalLoading) {
+                    if (view.name == 'month') {
+                        $('#calendar').fullCalendar('removeEventSource', sourceFullView);
+                        $('#calendar').fullCalendar('removeEvents');
+                        $('#calendar').fullCalendar('addEventSource', sourceSummaryView);
+                    }
+                    else {
+                        $('#calendar').fullCalendar('removeEventSource', sourceSummaryView);
+                        $('#calendar').fullCalendar('removeEvents');
+                        $('#calendar').fullCalendar('addEventSource', sourceFullView);
+                    }
+                }
+            }
+
+        });
+
+        CalLoading = false;
+
+        
+    });
+
+    $('#btnInit').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: "/Home/Init",
+            success: function (response) {
+                if (response == 'True') {
+                    $('#calendar').fullCalendar('refetchEvents');
+                    alert('Database populated! ');
+                }
+                else {
+                    alert('Error, could not populate database!');
+                }
+            }
+        });
+    });
+
+    $('#btnPopupCancel').click(function () {
+        ClearPopupFormValues();
+        $('#popupEventForm').hide();
+    });
+
+    $('#btnPopupSave').click(function () {
+
+        $('#popupEventForm').hide();
+
+        var dataRow = {
+            'Title': $('#eventTitle').val(),
+            'NewEventDate': $('#eventDate').val(),
+            'NewEventTime': $('#eventTime').val(),
+            'NewEventDuration': $('#eventDuration').val()
+        }
+
+        ClearPopupFormValues();
+
+        $.ajax({
+            type: 'POST',
+            url: "/Home/SaveEvent",
+            data: dataRow,
+            success: function (response) {
+                if (response == 'True') {
+                    $('#calendar').fullCalendar('refetchEvents');
+                    alert('New event saved!');
+                }
+                else {
+                    alert('Error, could not save event!');
+                }
+            }
+        });
+    });
+
+    function ShowEventPopup(date) {
+        ClearPopupFormValues();
+        $('#popupEventForm').show();
+        $('#eventTitle').focus();
+    }
+
+    function ClearPopupFormValues() {
+        $('#eventID').val("");
+        $('#eventTitle').val("");
+        $('#eventDateTime').val("");
+        $('#eventDuration').val("");
+    }
+
+    function UpdateEvent(EventID, EventStart, EventEnd) {
+
+        var dataRow = {
+            'ID': EventID,
+            'NewEventStart': EventStart,
+            'NewEventEnd': EventEnd
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "/Home/UpdateEvent",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(dataRow)
+        });
+    }
+
+</script>
+
+
+}
+
+
+<div class="container">
+
+    <div>
+    <a href="#" id="btnInit" class="btn btn-secondary">Initialise database!</a> 
+    </div>
+
+    <div id='calendar' style="width:65%"></div>
+
+</div>
+
+
+<div id="popupEventForm" class="modal hide" style="display: none;">
+   <div class="modal-header"><h3>Add new event</h3></div>
+  <div class="modal-body">
+    <form id="EventForm" class="well">
+        <input type="hidden" id="eventID">
+        <label>Event title</label>
+        <input type="text" id="eventTitle" placeholder="Title here"><br />
+        <label>Scheduled date</label>
+        <input type="text" id="eventDate"><br />
+        <label>Scheduled time</label>
+        <input type="text" id="eventTime"><br />
+        <label>Appointment length (minutes)</label>
+        <input type="text" id="eventDuration" placeholder="15"><br />
+    </form>
+</div>
+  <div class="modal-footer">
+    <button type="button" id="btnPopupCancel" data-dismiss="modal" class="btn">Cancel</button>
+    <button type="button" id="btnPopupSave" data-dismiss="modal" class="btn btn-primary">Save event</button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+

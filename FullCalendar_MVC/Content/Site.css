@@ -1,0 +1,35 @@
+﻿
+.ENQUIRY {
+    
+    background-color: #FF9933;
+    border-color: #C0C0C0; 
+    color: White;
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-image: url('Bubble.png');
+    padding-left: 50px;
+}
+
+.BOOKED {
+    background-color: #33CCFF;
+    border-color: #C0C0C0;
+    color: White; /* text color */
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-image: url('ok.png');
+    padding-left: 50px;
+}
+
+.CONFIRMED {
+    background-color: #33CC33;
+    border-color: #C0C0C0;
+    color: White; /* text color */
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-image: url('Money.png');
+    padding-left: 50px;
+}
+
+h2 {
+font-size: 20px !important;  /* !important added to force override of any other h2 in CSS*/
+}

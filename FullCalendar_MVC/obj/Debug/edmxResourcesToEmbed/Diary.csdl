@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Diary" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="DiaryContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AppointmentDiary" EntityType="Diary.AppointmentDiary" />
+  </EntityContainer>
+  <EntityType Name="AppointmentDiary">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="SomeImportantKey" Nullable="false" />
+    <Property Type="DateTime" Name="DateTimeScheduled" Nullable="false" Precision="3" />
+    <Property Type="Int32" Name="AppointmentLength" Nullable="false" />
+    <Property Type="Int32" Name="StatusENUM" Nullable="false" />
+  </EntityType>
+</Schema>
